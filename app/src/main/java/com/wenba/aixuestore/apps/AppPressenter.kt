@@ -15,9 +15,9 @@ class AppPressenter(appDataRepostory: AppDataRepostory, appView: AppContract.Vie
     private var mTasksRepository: AppDataRepostory = checkNotNull(appDataRepostory)
 
 
-    override fun loadAppInfos(filter: Filter) {
+    override fun loadAppInfos(page: Int, filter: Filter) {
         mAppView.showRefresh(true)
-        mTasksRepository.loadAppInfos(Config.uKey, Config._api_key)
+        mTasksRepository.loadAppInfos(Config.uKey, Config._api_key, page)
                 ?.subscribe({ response ->
                     val baseInfo = response.data
                     if (baseInfo == null) {
@@ -47,6 +47,7 @@ class AppPressenter(appDataRepostory: AppDataRepostory, appView: AppContract.Vie
                                 .toList().blockingGet())
                     }
                     mAppView.showRefresh(false)
+                    mAppView.loadComplete()
                 })
     }
 

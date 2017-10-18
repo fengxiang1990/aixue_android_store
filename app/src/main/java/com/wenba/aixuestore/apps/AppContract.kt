@@ -11,6 +11,7 @@ interface AppContract {
 
         fun showFilteringPopUpMenu()
         fun showRefresh(isRefresh: Boolean)
+        fun loadComplete()
         fun showApps(appinfos: List<AppInfo>?)
         fun toAppDetail(appKey: String, appName: String)
         fun toInstall(aKey: String, appName: String)
@@ -27,7 +28,7 @@ interface AppContract {
 
     interface Pressenter : BasePresenter {
 
-        fun loadAppInfos(filter: Filter = Filter.ALL)
+        fun loadAppInfos(page: Int = 1, filter: Filter = Filter.ALL)
 
 
     }

@@ -1,8 +1,5 @@
 package com.wenba.aixuestore.apps
 
-import com.wenba.aixuestore.R
-import com.wenba.aixuestore.data.AppInfo
-import com.wenba.aixuestore.util.UrlMapping
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -16,8 +13,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import cn.finalteam.loadingviewfinal.LoadMoreMode
+import cn.finalteam.loadingviewfinal.RecyclerViewFinal
 import cn.finalteam.loadingviewfinal.SwipeRefreshLayoutFinal
 import com.bumptech.glide.Glide
+import com.wenba.aixuestore.R
+import com.wenba.aixuestore.data.AppInfo
+import com.wenba.aixuestore.util.UrlMapping
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 
 class AppsFragment : Fragment(), AppContract.View {
@@ -26,12 +28,14 @@ class AppsFragment : Fragment(), AppContract.View {
     var adapter: AppAdapter? = null
     var pressenter: AppContract.Pressenter? = null
     var filter = Filter.MASTER
-    var recycleView: RecyclerView? = null
+    var recycleView: RecyclerViewFinal? = null
     var swipeRefreshLayout: SwipeRefreshLayoutFinal? = null
+    var page = 1
+    var isLoadMore = false
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_apps, container, false)
-        recycleView = view?.findViewById(R.id.recycleView) as RecyclerView
+        recycleView = view?.findViewById(R.id.recycleView) as RecyclerViewFinal
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout) as SwipeRefreshLayoutFinal
         recycleView?.overScrollMode = View.OVER_SCROLL_NEVER
         recycleView?.layoutManager = LinearLayoutManager(activity)
@@ -43,8 +47,17 @@ class AppsFragment : Fragment(), AppContract.View {
         recycleView?.adapter = adapter
         swipeRefreshLayout?.isRefreshing = true
         swipeRefreshLayout?.setOnRefreshListener({
-            pressenter?.loadAppInfos(filter)
+            page = 1
+            isLoadMore = false
+            pressenter?.loadAppInfos(page, filter)
         })
+        recycleView?.setHasLoadMore(true)
+        recycleView?.setLoadMoreMode(LoadMoreMode.SCROLL)
+        recycleView?.setOnLoadMoreListener {
+            page = page.inc()
+            isLoadMore = true
+            pressenter?.loadAppInfos(page, filter)
+        }
 
         val tag = arguments["tag"] as String
         when (tag) {
@@ -52,7 +65,7 @@ class AppsFragment : Fragment(), AppContract.View {
             "pro" -> filter = Filter.PRO
             "all" -> filter = Filter.ALL
         }
-        pressenter?.loadAppInfos(filter)
+        pressenter?.loadAppInfos(page, filter)
         return view
     }
 
@@ -72,7 +85,9 @@ class AppsFragment : Fragment(), AppContract.View {
     }
 
     override fun showApps(appinfos: List<AppInfo>?) {
-        this.appInfos.clear()
+        if (!isLoadMore) {
+            this.appInfos.clear()
+        }
         this.appInfos.addAll(appinfos!!)
         adapter?.notifyDataSetChanged()
     }
@@ -148,5 +163,8 @@ class AppsFragment : Fragment(), AppContract.View {
     override fun showFilteringPopUpMenu() {
     }
 
+    override fun loadComplete() {
+        recycleView?.onLoadMoreComplete()
+    }
 
 }

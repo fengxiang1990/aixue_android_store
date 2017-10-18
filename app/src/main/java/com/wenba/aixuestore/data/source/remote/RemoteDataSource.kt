@@ -33,13 +33,14 @@ class RemoteDataSource : AppDataSource {
     }
 
 
-    override fun loadAppInfos(ukey: String, _api_key: String): Flowable<BaseResponse<BaseAppInfo>> {
+    override fun loadAppInfos(ukey: String, _api_key: String, page: Int): Flowable<BaseResponse<BaseAppInfo>> {
         return Flowable.just(UrlMapping.ListMyPublished)
                 .subscribeOn(Schedulers.io())
                 .flatMap({ url ->
                     val map = HashMap<String, Any>()
                     map.put("uKey", ukey)
                     map.put("_api_key", _api_key)
+                    map.put("page", page)
                     val response = OkHttpKotlinHelper.postFormSync(url, map)
                     val result = response.body()?.string()
                     Log.e(tag, "result->" + result)

@@ -33,7 +33,7 @@ object OkHttpKotlinHelper {
         val keys = params.keys
         val formBody = FormBody.Builder()
         for (key in keys) {
-            formBody.add(key, params[key] as String?)
+            formBody.add(key, params[key].toString())
         }
         var request = Request.Builder()
                 .url(url)

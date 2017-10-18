@@ -9,8 +9,8 @@ class AppDataRepostory(remoteDataSource: RemoteDataSource) : AppDataSource {
 
     private val mRemoteDataSource: RemoteDataSource = checkNotNull(remoteDataSource)
 
-    override fun loadAppInfos(ukey: String, _api_key: String): Flowable<BaseResponse<BaseAppInfo>>? {
-        return mRemoteDataSource.loadAppInfos(ukey, _api_key)
+    override fun loadAppInfos(ukey: String, _api_key: String,page : Int): Flowable<BaseResponse<BaseAppInfo>>? {
+        return mRemoteDataSource.loadAppInfos(ukey, _api_key,page)
     }
 
     override fun loadAppDetail(aKey: String, _api_key: String): Flowable<JSONObject>? {
