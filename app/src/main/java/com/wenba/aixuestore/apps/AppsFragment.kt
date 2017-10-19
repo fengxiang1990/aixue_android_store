@@ -21,6 +21,7 @@ import com.wenba.aixuestore.R
 import com.wenba.aixuestore.data.AppInfo
 import com.wenba.aixuestore.util.UrlMapping
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
+import kotlinx.android.synthetic.main.fragment_apps.*
 
 class AppsFragment : Fragment(), AppContract.View {
 
@@ -167,4 +168,12 @@ class AppsFragment : Fragment(), AppContract.View {
         recycleView?.onLoadMoreComplete()
     }
 
+    override fun showFaild(msg: String) {
+        text_error.visibility = View.VISIBLE
+        text_error.text = msg
+    }
+
+    override fun hideFaild() {
+        text_error.visibility = View.GONE
+    }
 }

@@ -6,6 +6,7 @@ import com.wenba.aixuestore.data.source.AppDataSource
 import com.wenba.aixuestore.data.source.BaseAppInfo
 import com.wenba.aixuestore.network.BaseResponse
 import com.wenba.aixuestore.network.OkHttpKotlinHelper
+import com.wenba.aixuestore.network.ResponseCode
 import com.wenba.aixuestore.util.JsonWrapper
 import com.wenba.aixuestore.util.UrlMapping
 import io.reactivex.Flowable
@@ -45,11 +46,12 @@ class RemoteDataSource : AppDataSource {
                     val result = response.body()?.string()
                     Log.e(tag, "result->" + result)
                     val jsonObject = JSONObject(result)
-                    val code = jsonObject["code"]
-                    if (code == 0) {
+                    val code = jsonObject["code"] as Int
+                    val message = jsonObject["message"] as String
+                    if (code == ResponseCode.SUCCESS.code) {
                         Flowable.just(JsonWrapper.parse<BaseResponse<BaseAppInfo>>(result, object : TypeToken<BaseResponse<BaseAppInfo>>() {}.type))
                     } else {
-                        Flowable.just(BaseResponse())
+                        Flowable.just(BaseResponse(code, message))
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())

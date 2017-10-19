@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,11 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <cn.finalteam.loadingviewfinal.RecyclerViewFinal
-            android:id="@+id/recycleView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:noLoadMoreHideView="true" />
+            android:layout_height="match_parent">
 
+            <cn.finalteam.loadingviewfinal.RecyclerViewFinal
+                android:id="@+id/recycleView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:noLoadMoreHideView="true" />
+
+            <TextView
+                android:id="@+id/text_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:gravity="center_horizontal"
+                android:paddingTop="20dp"
+                android:textColor="@color/text_black_gray_dark"
+                android:textSize="20sp"
+                android:visibility="gone" />
+        </FrameLayout>
     </cn.finalteam.loadingviewfinal.SwipeRefreshLayoutFinal>
-</LinearLayout>
+
+
+</FrameLayout>

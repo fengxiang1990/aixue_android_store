@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         tabLayout.addTab(tabLayout.newTab().setText(titles!![1]))
         tabLayout.addTab(tabLayout.newTab().setText(titles!![2]))
         tabLayout.setupWithViewPager(viewPager)
-
         val selection = SharedPreferenceUtil.getInt(this, LAST_TAB, 0)
         viewPager.currentItem = selection!!
         checkedId = SharedPreferenceUtil.getInt(this, LAST_ENV, R.id.env1)!!

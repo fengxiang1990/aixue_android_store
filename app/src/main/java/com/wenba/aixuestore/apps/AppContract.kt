@@ -15,6 +15,8 @@ interface AppContract {
         fun showApps(appinfos: List<AppInfo>?)
         fun toAppDetail(appKey: String, appName: String)
         fun toInstall(aKey: String, appName: String)
+        fun showFaild(msg: String)
+        fun hideFaild()
     }
 
     interface DetailView : BaseView<Pressenter> {

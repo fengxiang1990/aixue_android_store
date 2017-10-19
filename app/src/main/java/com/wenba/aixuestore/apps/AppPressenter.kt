@@ -2,6 +2,7 @@ package com.wenba.aixuestore.apps
 
 import com.wenba.aixuestore.data.AppInfo
 import com.wenba.aixuestore.data.source.AppDataRepostory
+import com.wenba.aixuestore.network.ResponseCode
 import com.wenba.aixuestore.util.Config
 import io.reactivex.Flowable
 
@@ -19,6 +20,18 @@ class AppPressenter(appDataRepostory: AppDataRepostory, appView: AppContract.Vie
         mAppView.showRefresh(true)
         mTasksRepository.loadAppInfos(Config.uKey, Config._api_key, page)
                 ?.subscribe({ response ->
+                    if (response.code != ResponseCode.SUCCESS.code) {
+                        if (response.code == ResponseCode.NOT_HAVE_NETWORK.code) {
+                            mAppView.showFaild(ResponseCode.NOT_HAVE_NETWORK.msg)
+                        } else {
+                            mAppView.showFaild(ResponseCode.OTHERS.msg)
+                        }
+                        mAppView.showRefresh(false)
+                        mAppView.loadComplete()
+                        return@subscribe
+                    } else {
+                        mAppView.hideFaild()
+                    }
                     val baseInfo = response.data
                     if (baseInfo == null) {
                         mAppView.showApps(ArrayList())

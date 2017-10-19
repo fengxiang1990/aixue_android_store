@@ -3,6 +3,13 @@ package com.wenba.aixuestore.network
 class BaseResponse<T> {
 
 
+    constructor()
+
+    constructor(code: Int, msg: String) {
+        this.code = code
+        this.message = msg
+    }
+
     var code: Int = 0
 
     var message: String? = null
