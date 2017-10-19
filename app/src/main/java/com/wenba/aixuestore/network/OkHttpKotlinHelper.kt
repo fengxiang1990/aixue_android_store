@@ -13,7 +13,7 @@ object OkHttpKotlinHelper {
     private fun getOkHttpClient(): OkHttpClient {
         if (client == null) {
             client = OkHttpClient.Builder()
-                    .addInterceptor(LogInterceptor()).build()
+                    .addNetworkInterceptor(LogInterceptor()).build()
         }
         return client!!
     }
