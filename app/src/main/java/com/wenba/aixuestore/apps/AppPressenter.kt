@@ -21,11 +21,7 @@ class AppPressenter(appDataRepostory: AppDataRepostory, appView: AppContract.Vie
         mTasksRepository.loadAppInfos(Config.uKey, Config._api_key, page)
                 ?.subscribe({ response ->
                     if (response.code != ResponseCode.SUCCESS.code) {
-                        if (response.code == ResponseCode.NOT_HAVE_NETWORK.code) {
-                            mAppView.showFaild(ResponseCode.NOT_HAVE_NETWORK.msg)
-                        } else {
-                            mAppView.showFaild(ResponseCode.OTHERS.msg)
-                        }
+                        mAppView.showFaild(response.message!!)
                         mAppView.showRefresh(false)
                         mAppView.loadComplete()
                         return@subscribe

@@ -5,6 +5,8 @@ import android.util.Log
 import com.wenba.aixuestore.util.NetWorkUtils
 import okhttp3.*
 import org.json.JSONObject
+import java.net.ProxySelector
+import java.net.SocketTimeoutException
 
 object OkHttpKotlinHelper {
 
@@ -24,6 +26,7 @@ object OkHttpKotlinHelper {
         if (client == null) {
             client = OkHttpClient.Builder()
                     .retryOnConnectionFailure(false)
+                    .proxySelector(ProxySelector.getDefault())
                     .addInterceptor(NetConnInterceptor())
                     .addNetworkInterceptor(LogInterceptor()).build()
         }
@@ -56,12 +59,19 @@ object OkHttpKotlinHelper {
 
     private fun getDefaultResponse(request: Request, e: Throwable): Response {
         val body = JSONObject()
-        if (e is NotHaveNetworkException) {
-            body.put("code", ResponseCode.NOT_HAVE_NETWORK.code)
-            body.put("message", ResponseCode.NOT_HAVE_NETWORK.msg)
-        } else {
-            body.put("code", ResponseCode.OTHERS.code)
-            body.put("message", ResponseCode.OTHERS.msg)
+        when (e) {
+            is NotHaveNetworkException -> {
+                body.put("code", ResponseCode.NOT_HAVE_NETWORK.code)
+                body.put("message", ResponseCode.NOT_HAVE_NETWORK.msg)
+            }
+            is SocketTimeoutException -> {
+                body.put("code", ResponseCode.TIMEOUT.code)
+                body.put("message", ResponseCode.TIMEOUT.msg)
+            }
+            else -> {
+                body.put("code", ResponseCode.OTHERS.code)
+                body.put("message", ResponseCode.OTHERS.msg)
+            }
         }
         return Response.Builder()
                 .request(request)

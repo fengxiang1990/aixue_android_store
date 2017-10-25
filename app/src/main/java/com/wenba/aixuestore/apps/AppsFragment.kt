@@ -169,11 +169,11 @@ class AppsFragment : Fragment(), AppContract.View {
     }
 
     override fun showFaild(msg: String) {
-        text_error.visibility = View.VISIBLE
-        text_error.text = msg
+        text_error?.visibility = View.VISIBLE
+        text_error?.text = msg
     }
 
     override fun hideFaild() {
-        text_error.visibility = View.GONE
+        text_error?.visibility = View.GONE
     }
 }

@@ -7,7 +7,8 @@ enum class ResponseCode(val code: Int, val msg: String) {
 
     SUCCESS(0, "Successful getData"),
     NOT_HAVE_NETWORK(-1, "没有网络,请检查网络连接"),
-    OTHERS(-2, "请求错误");
+    OTHERS(-2, "请求错误"),
+    TIMEOUT(-3, "网络请求超时");
 
 
 }

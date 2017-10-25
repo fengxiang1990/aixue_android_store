@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.PagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.PopupMenu
@@ -15,6 +16,7 @@ import com.wenba.aixuestore.util.Config
 import com.wenba.aixuestore.util.SharedPreferenceUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.support.v4.withArguments
+import org.jetbrains.anko.toast
 
 
 class MainActivity : AppCompatActivity() {
