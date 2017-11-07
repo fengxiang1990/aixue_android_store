@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.wenba.aixuestore"
         minSdkVersion 21
@@ -48,17 +48,13 @@ android {
             //注意要添加签名
             signingConfig signingConfigs.release
             //自定义apk名字
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    String fileName
+            android.applicationVariants.all  { variant ->
+                variant.outputs.all {
                     if (variant.buildType.name == 'release') {
-                        //fileName = "aixuestore-${defaultConfig.versionName}-${releaseTime()}.apk".toLowerCase()
-                        fileName = "aixuestore-release.apk"
+                        outputFileName  = "aixuestore-release.apk"
                     } else if (variant.buildType.name == 'debug') {
-                        fileName = "aixuestore-debug.apk".toLowerCase()
+                        outputFileName  = "aixuestore-debug.apk".toLowerCase()
                     }
-                    output.outputFile = new File(
-                            output.outputFile.parent, fileName)
                 }
 
             }
